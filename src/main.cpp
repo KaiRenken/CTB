@@ -1,31 +1,29 @@
 #include <iostream>
+#include <stdlib.h>
+#include <string>
+#include <bitset>
 #include "Matrix.h"
 #include "basics.h"
 
 int main()
 {
-	Matrix* A = new Matrix(2,2);
-	Matrix* B = new Matrix(2,1);
-	A->setEntry(0,0,2);
-	A->setEntry(1,0,0);
-	A->setEntry(0,1,0);
-	A->setEntry(1,1,2);
-	B->setEntry(0,0,1);
-	B->setEntry(1,0,2);
-	Matrix* product = multMats(A,B);
-	
-	for (int i = 0; i < 2; i++)
-	{
-		for (int j = 0; j < 1; j++)
-		{
-			std::cout << product->getEntry(i,j) << " ";
-		}
-		std::cout << std::endl;
-	}
-	
-	delete A;
-	delete B;
-	delete product;
-	
+    Matrix* v = new Matrix(5,0);
+    v->setEntry(0,0,1);
+    v->setEntry(1,0,2);
+    v->setEntry(2,0,3);
+    v->setEntry(3,0,4);
+    v->setEntry(4,0,5);
+    Matrix* sets = vChooseK(v,3);
+    for (int i = 0; i < 5; i++)
+    {
+        for (int j = 0; j < 31; j++)
+        {
+            std::cout << sets->getEntry(i,j) << " ";
+        }
+        std::cout << std::endl;
+    }
+    delete sets;
+    delete v;
+
 	return 0;
 }
