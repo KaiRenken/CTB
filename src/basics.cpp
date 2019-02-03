@@ -1,9 +1,21 @@
-#include <iostream>
 #include "Matrix.h"
 #include <stdlib.h>
-#include <string>
-#include <bitset>
 #include <math.h>
+#include <stdio.h>
+
+int* intToBinary(int n)
+{
+	int digits = floor(log2(n)) + 1;
+	int *result = new int[digits];
+	int temp = n;
+
+	for (int i = digits - 1; i >= 0; i--) {
+		result[i] = temp % 2;
+		temp = floor(temp / 2);
+	}
+
+	return result;
+}
 
 int nChooseK(int n, int k)
 {
@@ -28,35 +40,94 @@ int nChooseK(int n, int k)
 	return result;
 }
 
+Matrix* binaryCombinations(int n, int k)
+{
+    if (n == k)
+    {
+        Matrix* result = new Matrix(n,1);
+        for (int i = 0; i < n; i++)
+        {
+            result->setEntry(i, 0, 1);
+        }
+        return result;
+    }
+
+    if (k == 1)
+    {
+        Matrix* result = new Matrix(n,n);
+
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = 0; j < n; j++)
+            {
+                if (i == j)
+                {
+                    result->setEntry(i, j, 1);
+                } else {
+                    result->setEntry(i, j, 0);
+                }
+            }
+        }
+        return result;
+    }
+
+    Matrix* result = new Matrix(n, nChooseK(n, k));
+    Matrix* temp1 = binaryCombinations(n - 1, k - 1);
+    Matrix* temp2 = binaryCombinations(n - 1, k);
+
+    for (int c = 0; c < nChooseK(n - 1, k - 1); c++)
+    {
+        result->setEntry(0, c, 1);
+
+        for(int i = 1; i <= n-1; i++)
+        {
+            for (int j = 0; j < nChooseK(n - 1, k - 1); j++)
+            {
+                result->setEntry(i, j, temp1->getEntry(i-1, j));
+            }
+        }
+    }
+
+    for (int c = nChooseK(n - 1, k - 1); c < nChooseK(n, k); c++)
+    {
+        result->setEntry(0, c, 0);
+
+        for(int i = 1; i <= n-1; i++)
+        {
+            for (int j = nChooseK(n - 1, k - 1); j < nChooseK(n, k); j++)
+            {
+                result->setEntry(i, j, temp2->getEntry(i-1, j - nChooseK(n - 1, k - 1)));
+            }
+        }
+    }
+
+    delete temp1;
+    delete temp2;
+
+    return result;
+}
+
 Matrix* vChooseK(Matrix* v, int k)
 {
-    Matrix* result = new Matrix(v->getLines(), pow(2, v->getLines()) - 1);
-
-    char digit;
-    int idigit;
+    Matrix* result = new Matrix(k, nChooseK(v->getLines(), k));
+    Matrix* binCombs = binaryCombinations(v->getLines(), k);
     int counter;
 
-    for (int s = 1; s <= pow(2, v->getLines()) - 1; s++)
+    for (int i = 0; i < binCombs->getColumns(); i++)
     {
-        std::string binaryS = std::bitset<v->getLines()>(s).to_string();
-
         counter = 0;
 
-        for (int i = 1; i <= v->getLines(); i++)
+        for (int j = 0; j < binCombs->getLines(); j++)
         {
-            digit = binaryS[i];
-            idigit = (int)digit;
-            if (idigit == 1)
+            if (binCombs->getEntry(j, i) == 1)
             {
-                result->setEntry(counter, s-1, v->getEntry(i,0));
+                result->setEntry(counter, i, v->getEntry(j,0));
                 counter++;
             }
         }
-        for (int i = counter; i < v->getLines(); i++)
-        {
-            result->setEntry(counter, s-1, 0);
-        }
     }
+
+    delete binCombs;
     return result;
 }
 
@@ -78,6 +149,7 @@ Matrix* multMats(Matrix* mat1, Matrix* mat2)
 			result->setEntry(i,j,temp);
 		}
 	}
+
 	return result;
 }
 
