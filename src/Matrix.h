@@ -1,43 +1,38 @@
 #ifndef MATRIX_H
 #define MATRIX_H
 
-#include <vector>
-
 typedef std::vector<int> line;
 
 class Matrix {
 
 public:
-    Matrix(int pLines, int pColumns) :lines(pLines), columns(pColumns) {
-		
-		// Set size of the vector of lines
-        matrix.resize(lines);
-        
-        // Set size of each line within the vector of lines
-        for (int i = 0; i < lines; i++) {
-            matrix[i].resize(columns);
-        }
-    }
+
+	// Constructor
+    Matrix(int pLines, int pColumns);
 
 	// Get number of lines
-    int getLines() {
-		return lines;
-	}
+    int getLines();
 	
 	// Get size of a line
-    int getColumns() {
-		return columns;
-	}
+    int getColumns();
 	
 	// Get a certain entry of the matrix
-    int getEntry(int pLine, int pColumn) {
-		return matrix[pLine][pColumn];
-	}
+    int getEntry(int pLine, int pColumn);
 	
 	// Set a certain entry of the matrix
-    void setEntry(int pLine, int pColumn, int pEntry) {
-		matrix[pLine][pColumn] = pEntry;
-	}
+    void setEntry(int pLine, int pColumn, int pEntry);
+    
+    // Get a certain column of the matrix
+    Matrix* getColumn(int j);
+    
+    // Check if a given column is contained in the column matrix
+    bool containsColumn(Matrix* column);
+    
+    // Get the norm of the matrix
+    int getNorm();
+    
+    // Check if the column matrix is cosystolic
+    bool isCosystole(int n, int k);
 
 private:
     int lines;
