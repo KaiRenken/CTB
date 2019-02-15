@@ -173,48 +173,68 @@ Matrix* transposeMatrix(Matrix* M)
 Matrix* boundaryMatrix(int n, int k)
 {
 	Matrix* result = new Matrix(nChooseK(n, k+1), nChooseK(n, k+2));
-	
+
 	Matrix* vertices = new Matrix(n, 1);
-	
+
 	for (int i = 0; i < n; i++)
 	{
 		vertices->setEntry(i, 0, i+1);
 	}
-	
+
 	Matrix* s1 = vChooseK(vertices, k+2);
 	Matrix* s0 = vChooseK(vertices, k+1);
-	
+
 	for (int j = 0; j < result->getColumns(); j++)
 	{
 		Matrix* columnJ = s1->getColumn(j);
-		
+
 		for (int i = 0; i < result->getLines(); i++)
 		{
 			Matrix* columnI = s0->getColumn(i);
-			
+
 			if (columnJ->containsColumn(columnI) == true)
 			{
 				result->setEntry(i, j, 1);
 			} else {
 				result->setEntry(i, j, 0);
 			}
-			
+
 			delete columnI;
 		}
-		
+
 		delete columnJ;
 	}
-	
+
 	delete vertices;
 	delete s1;
 	delete s0;
-	
+
 	return result;
 }
 
 Matrix* coboundaryMatrix(int n, int k)
 {
 	Matrix* result = transposeMatrix(boundaryMatrix(n, k));
-	
+
 	return result;
+}
+
+Matrix* addMats(Matrix* mat1, Matrix* mat2)
+{
+    Matrix* result = new Matrix(mat1->getLines(), mat1->getColumns());
+
+    for (int i = 0; i < result->getLines(); i++)
+    {
+        for (int j = 0; j < result->getColumns(); j++)
+        {
+            if (mat1->getEntry(i, j) == mat2->getEntry(i, j))
+            {
+                result->setEntry(i, j, 0);
+            } else {
+                result->setEntry(i, j, 1);
+            }
+        }
+    }
+
+    return result;
 }

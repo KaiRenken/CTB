@@ -9,5 +9,6 @@ Matrix* multMats(Matrix* mat1, Matrix* mat2);
 Matrix* boundaryMatrix(int n, int k);
 Matrix* coboundaryMatrix(int n, int k);
 Matrix* transposeMatrix(Matrix* M);
+Matrix* addMats(Matrix* mat1, Matrix* mat2);
 
 #endif
