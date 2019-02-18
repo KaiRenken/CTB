@@ -32,7 +32,10 @@ public:
     int getNorm();
 
     // Get the cosystolic norm of the column matrix
-    int getCosystolicNorm(int n, int k);
+    int getCosystolicNorm(int n, int k, Matrix* coboundaryMat);
+    
+    // Get the coboundary expansion of the column matrix
+    float getCoboundaryExpansion(int n, int k, Matrix* coboundaryMat, Matrix* coboundaryMat1);
 
 private:
     int lines;

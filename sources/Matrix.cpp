@@ -84,9 +84,8 @@ int Matrix::getNorm()
 	return result;
 }
 
-int Matrix::getCosystolicNorm(int n, int k)
+int Matrix::getCosystolicNorm(int n, int k, Matrix* coboundaryMat)
 {
-	Matrix* coboundaryMat = coboundaryMatrix(n, k-1);
 	int length = nChooseK(n, k);
 	int result = this->getNorm();
 
@@ -113,7 +112,22 @@ int Matrix::getCosystolicNorm(int n, int k)
         delete simplices;
     }
 
-    delete coboundaryMat;
-
     return result;
+}
+
+float Matrix::getCoboundaryExpansion(int n, int k, Matrix* coboundaryMat, Matrix* coboundaryMat1)
+{
+	
+	Matrix* coboundary = multMats(coboundaryMat, this);
+	
+	int cosNorm = this->getCosystolicNorm(n, k, coboundaryMat1);
+	
+	if (cosNorm == 0)
+	{
+		return 0;
+	}
+	
+	float result = (float)coboundary->getNorm() / (float)cosNorm;
+	
+	return result;
 }

@@ -238,3 +238,38 @@ Matrix* addMats(Matrix* mat1, Matrix* mat2)
 
     return result;
 }
+
+float cheegerConstant(int n, int k)
+{
+	float result = nChooseK(n, k+2) + 1;
+	
+	Matrix* coboundaryMat = coboundaryMatrix(n, k);
+	Matrix* coboundaryMat1 = coboundaryMatrix(n, k-1);
+	
+	int length = nChooseK(n, k+1);
+
+	for (int i = 1; i <= length; i++)
+    {
+        Matrix* simplices = binaryCombinations(length, i);
+
+        for (int j = 0; j < simplices->getColumns(); j++)
+        {
+            Matrix* column = simplices->getColumn(j);
+            float tempRes = column->getCoboundaryExpansion(n, k, coboundaryMat, coboundaryMat1);
+            
+            if (tempRes < result && tempRes != 0)
+            {
+				result = tempRes;
+			} 
+
+            delete column;
+        }
+
+        delete simplices;
+    }
+    
+    delete coboundaryMat;
+    delete coboundaryMat1;
+    
+	return result;
+}
