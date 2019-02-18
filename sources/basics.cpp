@@ -136,6 +136,7 @@ Matrix* vChooseK(Matrix* v, int k)
 Matrix* multMats(Matrix* mat1, Matrix* mat2)
 {
 	int temp;
+    int prod;
 
 	Matrix* result = new Matrix(mat1->getLines(), mat2->getColumns());
 
@@ -146,7 +147,15 @@ Matrix* multMats(Matrix* mat1, Matrix* mat2)
 			temp = 0;
 			for (int n = 0; n < mat1->getColumns(); n++)
 			{
-				temp = temp + mat1->getEntry(i,n) * mat2->getEntry(n,j);
+			    if (mat1->getEntry(i,n) == 1 && mat2->getEntry(n,j) == 1)
+                {
+                    if (temp == 1)
+                    {
+                        temp = 0;
+                    } else {
+                        temp = 1;
+                    }
+                }
 			}
 			result->setEntry(i,j,temp);
 		}
@@ -241,11 +250,11 @@ Matrix* addMats(Matrix* mat1, Matrix* mat2)
 
 float cheegerConstant(int n, int k)
 {
-	float result = nChooseK(n, k+2) + 1;
-	
+	float result = ( n / (k + 2) ) + 1;
+
 	Matrix* coboundaryMat = coboundaryMatrix(n, k);
 	Matrix* coboundaryMat1 = coboundaryMatrix(n, k-1);
-	
+
 	int length = nChooseK(n, k+1);
 
 	for (int i = 1; i <= length; i++)
@@ -256,20 +265,20 @@ float cheegerConstant(int n, int k)
         {
             Matrix* column = simplices->getColumn(j);
             float tempRes = column->getCoboundaryExpansion(n, k, coboundaryMat, coboundaryMat1);
-            
+
             if (tempRes < result && tempRes != 0)
             {
 				result = tempRes;
-			} 
+			}
 
             delete column;
         }
 
         delete simplices;
     }
-    
+
     delete coboundaryMat;
     delete coboundaryMat1;
-    
+
 	return result;
 }
