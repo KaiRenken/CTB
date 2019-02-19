@@ -1,0 +1,3 @@
+sources/*.o
+tests/*.o
+tests/*.exe
