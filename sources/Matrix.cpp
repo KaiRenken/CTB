@@ -89,16 +89,20 @@ int Matrix::getCosystolicNorm(int n, int k, Matrix* coboundaryMat)
 	int length = nChooseK(n, k);
 	int result = this->getNorm();
 	int tempNorm;
+	Matrix* simplices;
+	Matrix* column;
+	Matrix* cobound;
+	Matrix* tempVec;
 
 	for (int i = 1; i <= length; i++)
     {
-        Matrix* simplices = binaryCombinations(length, i);
+        simplices = binaryCombinations(length, i);
 
         for (int j = 0; j < simplices->getColumns(); j++)
         {
-            Matrix* column = simplices->getColumn(j);
-            Matrix* cobound = multMats(coboundaryMat, column);
-            Matrix* tempVec = addMats(cobound, this);
+            column = simplices->getColumn(j);
+            cobound = multMats(coboundaryMat, column);
+            tempVec = addMats(cobound, this);
 
             tempNorm = tempVec->getNorm();
 
@@ -133,4 +137,46 @@ float Matrix::getCoboundaryExpansion(int n, int k, Matrix* coboundaryMat, Matrix
 	float result = (float)coboundary->getNorm() / (float)cosNorm;
 
 	return result;
+}
+
+bool Matrix::isCosystole(int n, int k, Matrix* coboundaryMat)
+{
+    int length = nChooseK(n, k);
+	int norm = this->getNorm();
+	int tempNorm;
+	Matrix* simplices;
+	Matrix* column;
+	Matrix* cobound;
+	Matrix* tempVec;
+
+	for (int i = 1; i <= length; i++)
+    {
+        simplices = binaryCombinations(length, i);
+
+        for (int j = 0; j < simplices->getColumns(); j++)
+        {
+            column = simplices->getColumn(j);
+            cobound = multMats(coboundaryMat, column);
+            tempVec = addMats(cobound, this);
+
+            tempNorm = tempVec->getNorm();
+
+            if (tempNorm < norm)
+            {
+                delete column;
+                delete cobound;
+                delete tempVec;
+                delete simplices;
+                return false;
+            }
+
+            delete column;
+            delete cobound;
+            delete tempVec;
+        }
+
+        delete simplices;
+    }
+
+    return true;
 }

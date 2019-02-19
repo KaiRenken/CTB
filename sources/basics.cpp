@@ -8,7 +8,7 @@
 int* intToBinary(int n)
 {
 	int digits = floor(log2(n)) + 1;
-	int *result = new int[digits];
+	int* result = new int[digits];
 	int temp = n;
 
 	for (int i = digits - 1; i >= 0; i--) {
@@ -182,8 +182,9 @@ Matrix* transposeMatrix(Matrix* M)
 Matrix* boundaryMatrix(int n, int k)
 {
 	Matrix* result = new Matrix(nChooseK(n, k+1), nChooseK(n, k+2));
-
-	Matrix* vertices = new Matrix(n, 1);
+    Matrix* vertices = new Matrix(n, 1);
+	Matrix* columnJ;
+	Matrix* columnI;
 
 	for (int i = 0; i < n; i++)
 	{
@@ -195,11 +196,11 @@ Matrix* boundaryMatrix(int n, int k)
 
 	for (int j = 0; j < result->getColumns(); j++)
 	{
-		Matrix* columnJ = s1->getColumn(j);
+		columnJ = s1->getColumn(j);
 
 		for (int i = 0; i < result->getLines(); i++)
 		{
-			Matrix* columnI = s0->getColumn(i);
+			columnI = s0->getColumn(i);
 
 			if (columnJ->containsColumn(columnI) == true)
 			{
@@ -251,7 +252,10 @@ Matrix* addMats(Matrix* mat1, Matrix* mat2)
 float cheegerConstant(int n, int k)
 {
 	float result = ( n / (k + 2) ) + 1;
-
+	float tempRes;
+	Matrix* column;
+	Matrix* cobound;
+	Matrix* simplices;
 	Matrix* coboundaryMat = coboundaryMatrix(n, k);
 	Matrix* coboundaryMat1 = coboundaryMatrix(n, k-1);
 
@@ -259,17 +263,23 @@ float cheegerConstant(int n, int k)
 
 	for (int i = 1; i <= length; i++)
     {
-        Matrix* simplices = binaryCombinations(length, i);
+        simplices = binaryCombinations(length, i);
 
         for (int j = 0; j < simplices->getColumns(); j++)
         {
-            Matrix* column = simplices->getColumn(j);
-            float tempRes = column->getCoboundaryExpansion(n, k, coboundaryMat, coboundaryMat1);
+            column = simplices->getColumn(j);
 
-            if (tempRes < result && tempRes != 0)
+            if (column->isCosystole(n, k, coboundaryMat1) == true)
             {
-				result = tempRes;
-			}
+                cobound = multMats(coboundaryMat, column);
+                tempRes = (float)cobound->getNorm() / (float)column->getNorm();
+
+                if (tempRes < result)
+                {
+                    result = tempRes;
+                }
+                delete cobound;
+            }
 
             delete column;
         }

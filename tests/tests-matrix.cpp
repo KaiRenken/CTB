@@ -147,8 +147,3 @@ TEST_CASE( "getCoboundaryExpansion", "[getCoboundaryExpansion]" ) {
     delete coboundaryMat1;
     delete cochain;
 }
-
-TEST_CASE( "cheegerConstant", "[cheegerConstant]" ) {
-
-	REQUIRE( cheegerConstant(6, 1) == 2);
-}
