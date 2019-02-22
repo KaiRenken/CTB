@@ -11,7 +11,8 @@ int* intToBinary(int n)
 	int* result = new int[digits];
 	int temp = n;
 
-	for (int i = digits - 1; i >= 0; i--) {
+	for (int i = digits - 1; i >= 0; i--)
+    {
 		result[i] = temp % 2;
 		temp = floor(temp / 2);
 	}
@@ -47,6 +48,7 @@ Matrix* binaryCombinations(int n, int k)
     if (n == k)
     {
         Matrix* result = new Matrix(n,1);
+
         for (int i = 0; i < n; i++)
         {
             result->setEntry(i, 0, 1);
@@ -145,6 +147,7 @@ Matrix* multMats(Matrix* mat1, Matrix* mat2)
 		for (int j = 0; j < mat2->getColumns(); j++)
 		{
 			temp = 0;
+
 			for (int n = 0; n < mat1->getColumns(); n++)
 			{
 			    if (mat1->getEntry(i,n) == 1 && mat2->getEntry(n,j) == 1)

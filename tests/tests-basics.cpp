@@ -4,7 +4,7 @@
 
 TEST_CASE( "cheegerConstant", "[cheegerConstant]" ) {
 
-    /*int c1 = cheegerConstant(3, 1) * 100;
+    int c1 = cheegerConstant(3, 1) * 100;
     int c2 = cheegerConstant(4, 1) * 100;
     int c3 = cheegerConstant(4, 2) * 100;
     int c4 = cheegerConstant(5, 1) * 100;
@@ -16,9 +16,6 @@ TEST_CASE( "cheegerConstant", "[cheegerConstant]" ) {
 	REQUIRE( c3 == 100);
 	REQUIRE( c4 == 166);
 	REQUIRE( c5 == 200);
-	REQUIRE( c6 == 100);*/
+	REQUIRE( c6 == 100);
 
-	int c = cheegerConstant(6, 1) * 100;
-
-	REQUIRE( c == 200);
 }

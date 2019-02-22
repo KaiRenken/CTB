@@ -1,3 +1,4 @@
 sources/*.o
+sources/*.exe
 tests/*.o
 tests/*.exe

@@ -2,8 +2,8 @@
 #include "../headers/Matrix.h"
 #include "../headers/basics.h"
 
-TEST_CASE( "getLines", "[getLines]" ) {
-
+TEST_CASE( "getLines", "[getLines]" )
+{
 	Matrix* mat = new Matrix(10,20);
 
 	REQUIRE( mat->getLines() == 10 );
@@ -11,8 +11,8 @@ TEST_CASE( "getLines", "[getLines]" ) {
 	delete mat;
 }
 
-TEST_CASE( "getColumns", "[getColumns]" ) {
-
+TEST_CASE( "getColumns", "[getColumns]" )
+{
 	Matrix* mat = new Matrix(10,20);
 
 	REQUIRE( mat->getColumns() == 20 );
@@ -20,18 +20,22 @@ TEST_CASE( "getColumns", "[getColumns]" ) {
 	delete mat;
 }
 
-TEST_CASE( "setGetEntry", "[setGetEntry]" ) {
-
+TEST_CASE( "setGetEntry", "[setGetEntry]" )
+{
 	Matrix* mat = new Matrix(10,20);
 
-	for (int i = 0; i < 10; i++) {
-		for (int j = 0; j < 20; j++) {
+	for (int i = 0; i < 10; i++)
+    {
+		for (int j = 0; j < 20; j++)
+        {
 			mat->setEntry(i, j, i + j);
 		}
 	}
 
-	for (int i = 0; i < 10; i++) {
-		for (int j = 0; j < 20; j++) {
+	for (int i = 0; i < 10; i++)
+    {
+		for (int j = 0; j < 20; j++)
+		{
 			REQUIRE( mat->getEntry(i,j) == i + j );
 		}
 	}
@@ -39,54 +43,69 @@ TEST_CASE( "setGetEntry", "[setGetEntry]" ) {
 	delete mat;
 }
 
-TEST_CASE( "getColumn", "[getColumn]" ) {
-
+TEST_CASE( "getColumn", "[getColumn]" )
+{
 	Matrix* mat = new Matrix(10,20);
 
-	for (int i = 0; i < 10; i++) {
-		for (int j = 0; j < 20; j++) {
+	for (int i = 0; i < 10; i++)
+    {
+		for (int j = 0; j < 20; j++)
+		{
 			mat->setEntry(i, j, i + j);
 		}
 	}
 
-	for (int j = 0; j < 20; j++) {
+	for (int j = 0; j < 20; j++)
+    {
 		Matrix* column = mat->getColumn(j);
-		for (int i = 0; i < 10; i++) {
+
+		for (int i = 0; i < 10; i++)
+        {
 			REQUIRE( column->getEntry(i,0) == i + j );
 		}
+
 		delete column;
 	}
 
 	delete mat;
 }
 
-TEST_CASE( "containsColumn", "[containsColumn]" ) {
-
+TEST_CASE( "containsColumn", "[containsColumn]" )
+{
 	Matrix* column = new Matrix(10,1);
 
-	for (int i = 0; i < 10; i++){
+	for (int i = 0; i < 10; i++)
+    {
 		column->setEntry(i,0,i+1);
 	}
 
-	for (int i = 1; i <= 10; i++){
+	for (int i = 1; i <= 10; i++)
+    {
 		Matrix* ncolumn = new Matrix(i,1);
-		for (int j = 1; j <= i; j++){
+
+		for (int j = 1; j <= i; j++)
+        {
 			ncolumn->setEntry(j-1,0,j);
 		}
+
 		REQUIRE( column->containsColumn(ncolumn) == true );
+
 		ncolumn->setEntry(0,0,20);
+
 		REQUIRE( column->containsColumn(ncolumn) == false );
+
 		delete ncolumn;
 	}
 
 	delete column;
 }
 
-TEST_CASE( "getNorm", "[getNorm]" ) {
-
+TEST_CASE( "getNorm", "[getNorm]" )
+{
 	Matrix* column = new Matrix(10,1);
 
-	for (int i = 0; i < 10; i++){
+	for (int i = 0; i < 10; i++)
+    {
 		column->setEntry(i,0,i+1);
 	}
 
@@ -95,8 +114,8 @@ TEST_CASE( "getNorm", "[getNorm]" ) {
 	delete column;
 }
 
-TEST_CASE( "getCosystolicNorm", "[getCosystolicNorm]" ) {
-
+TEST_CASE( "getCosystolicNorm", "[getCosystolicNorm]" )
+{
 	Matrix* cochain = new Matrix(10, 1);
 
     cochain->setEntry(0,0,1);
@@ -118,8 +137,8 @@ TEST_CASE( "getCosystolicNorm", "[getCosystolicNorm]" ) {
     delete cochain;
 }
 
-TEST_CASE( "getCoboundaryExpansion", "[getCoboundaryExpansion]" ) {
-
+TEST_CASE( "getCoboundaryExpansion", "[getCoboundaryExpansion]" )
+{
 	Matrix* cochain = new Matrix(15, 1);
 
     cochain->setEntry(0,0,1);
